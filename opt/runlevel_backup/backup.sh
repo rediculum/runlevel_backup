@@ -48,7 +48,7 @@ fi
 f_keychain
 
 # Check if remote server is reachable and backup dir is available
-[[ `$RDIFFBIN --test-server $BACKUPSERVER::$BACKUPDIR >$TMPFILE 2>&1` ]] || { f_error "$BACKUPSERVER not reachable"; }
+[[ `$RDIFFBIN --test-server $BACKUPSERVER::$BACKUPDIR >$TMPFILE 2>&1` ]] && { f_error "$BACKUPSERVER not reachable"; }
 [[ `ssh -q $BACKUPSERVER "test -d $BACKUPDIR"` ]] || { f_error "$BACKUPDIR on $BACKUPSERVER not reachable or present"; }
 
 printf "++++++++++++++++++++++ Backup Start at `date +"%H:%M:%S"` +++++++++++++++++++++++\n" >$TMPFILE
