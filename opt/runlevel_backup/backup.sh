@@ -82,7 +82,7 @@ done
 printf "\n$TXT01\n# Backup of folders $FOLDERS (`date +"%H:%M:%S"`):\n$TXT01\n" >>$TMPFILE
 echo "--------------[ Change statistics ]--------------" >>$TMPFILE
 for FOLDER in $FOLDERS; do
-	$RDIFFBIN --compare $FOLDER $BACKUPDIR$FOLDER >>$TMPFILE
+	$RDIFFBIN --compare $FOLDER $BACKUPSERVER::$BACKUPDIR$FOLDER >>$TMPFILE
 done
 
 # Do the backup
@@ -92,7 +92,7 @@ $RDIFFBIN $RDIFFPARAMS $INCLUDEFOLDERS --exclude '**' / $BACKUPSERVER::$BACKUPDI
 $RDIFFBIN --remove-older-than $RETENTION --force $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 echo "--------------[ Incremental statistics ]--------------" >>$TMPFILE
-$RDIFFBIN -l $BACKUPDIR >>$TMPFILE
+$RDIFFBIN -l $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 printf "\n++++++++++++++++++++++ Backup End at `date +"%H:%M:%S"` +++++++++++++++++++++++" >>$TMPFILE
 TIMESTOP=`date +%s`
