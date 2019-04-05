@@ -30,7 +30,7 @@ TIMESTART=`date +%s`
 BASEDIR=`dirname $0`
 
 # Source config
-. $BASEDIR/backup.conf
+. $BASEDIR/backup.conf || { echo "backup.conf not found"; exit 1; }
 # Source library
 . $BASEDIR/backup.lib || { echo "backup.lib not found"; exit 1; }
 
@@ -44,8 +44,12 @@ fi
 # Check if rdiff-backup exists
 [[ `which $RDIFFBIN` ]] || { echo "$RDIFFBIN not found"; exit 1; }
 
-# Check if Backup Disk is mounted
-[[ `mount |grep " $BACKUPDISK "` >/dev/null ]] || f_error "$BACKUPDISK not mounted"
+# Check if a keychain with an adequate ssh agent exist and load it
+f_keychain
+
+# Check if remote server is reachable and backup dir is available
+[[ `$RDIFFBIN --test-server $BACKUPSERVER::$BACKUPDIR >$TMPFILE 2>&1` ]] || { f_error "$BACKUPSERVER not reachable"; }
+[[ `ssh -q $BACKUPSERVER "test -d $BACKUPDIR"` ]] || { f_error "$BACKUPDIR on $BACKUPSERVER not reachable or present"; }
 
 printf "++++++++++++++++++++++ Backup Start at `date +"%H:%M:%S"` +++++++++++++++++++++++\n" >$TMPFILE
 
@@ -82,10 +86,10 @@ for FOLDER in $FOLDERS; do
 done
 
 # Do the backup
-$RDIFFBIN $RDIFFPARAMS $INCLUDEFOLDERS --exclude '**' / $BACKUPDIR >>$TMPFILE
+$RDIFFBIN $RDIFFPARAMS $INCLUDEFOLDERS --exclude '**' / $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 # Retention
-$RDIFFBIN --remove-older-than $RETENTION --force $BACKUPDIR >>$TMPFILE
+$RDIFFBIN --remove-older-than $RETENTION --force $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 echo "--------------[ Incremental statistics ]--------------" >>$TMPFILE
 $RDIFFBIN -l $BACKUPDIR >>$TMPFILE
