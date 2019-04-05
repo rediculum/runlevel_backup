@@ -50,8 +50,8 @@ function f_ldapbackup()
 {
 	echo $TXT01 >>$TMPFILE; echo "# LDAP Backup" >>$TMPFILE; echo $TXT01 >>$TMPFILE
 	test -d $LDAPBACK || mkdir -p $LDAPBACK
-	sudo -H /usr/sbin/slapcat |egrep -v "structuralObjectClass|entryUUID|creatorsName|createTimestamp|entryCSN|modifiersName|modifyTimestamp" > $LDAPBACK/runlevel.ldif
-	echo "`grep "^dn:" $LDAPBACK/runlevel.ldif |wc -l` DN entries saved" >>$TMPFILE
+	sudo -H /usr/sbin/slapcat |egrep -v "structuralObjectClass|entryUUID|creatorsName|createTimestamp|entryCSN|modifiersName|modifyTimestamp" > $LDAPBACK/$LDIFFILE
+	echo "`grep "^dn:" $LDAPBACK/$LDIFFILE |wc -l` DN entries saved" >>$TMPFILE
 }
 
 function f_sendmail()
