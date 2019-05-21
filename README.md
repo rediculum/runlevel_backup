@@ -11,7 +11,9 @@ Tested on plaform families ''debian'' and ''redhat''
 ## Installation
 ### Ansible
 The easiest way is to use the [Ansible role](https://galaxy.ansible.com/rediculum/runlevel_backup). It will install all necessary dependencies and the download the framework from github
-`$ ansbile-galaxy install rediculum.runlevel_backup`
+```
+$ ansbile-galaxy install rediculum.runlevel_backup
+```
 ### Manual
 Clone the github repos
 ```
@@ -52,3 +54,7 @@ Edit the cron file `/etc/cron.d/runlevel_backup` if you want to change the time 
 
 ## License
 This project is licensed under the GNU Affero General Public License v3.0 License - see the [LICENSE](LICENSE) file for details
+
+## Authors
+* **Roland Hansmann** - *Initial work* - [Roland Hansmann](https://github.com/rediculum)
+See also the list of [contributors](https://github.com/rediculum/runlevel_backup/graphs/contributors) who participated in this project.
