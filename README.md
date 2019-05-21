@@ -56,5 +56,5 @@ Edit the cron file `/etc/cron.d/runlevel_backup` if you want to change the time 
 This project is licensed under the GNU Affero General Public License v3.0 License - see the [LICENSE](LICENSE) file for details
 
 ## Authors
-* **Roland Hansmann** - *Initial work* - [Roland Hansmann](https://github.com/rediculum)
+* **Roland Hansmann** - *Initial work* - [Roland Hansmann](https://github.com/rediculum)  
 See also the list of [contributors](https://github.com/rediculum/runlevel_backup/graphs/contributors) who participated in this project.
