@@ -23,6 +23,7 @@
 # Fri Aug 19 18:20:56 CET 2011 / Added package list file into /root
 # Tue May  7 16:40:14 CEST 2013 / Changed Database (MySQL/PG/LDAP) backup to dumps
 # Fri Apr  5 13:23:20 CEST 2019 / Redesigned by customizable config file
+# Sun Jul  7 20:11:49 CEST 2019 / Add Raspbian to Distro and refine grep
 
 
 ### Config
@@ -56,14 +57,14 @@ printf "++++++++++++++++++++++ Backup Start at `date +"%H:%M:%S"` ++++++++++++++
 DISTRO=`lsb_release -i |awk '{print $3}'`
 echo "Creating installed packages list $PKGLIST" >>$TMPFILE
 case $DISTRO in
-	Debian)
-		dpkg --get-selections |grep install |awk '{print $1}' > $PKGLIST
+	Debian|Raspbian)
+		dpkg --get-selections |egrep "\sinstall$" |awk '{print $1}' > $PKGLIST
 	;;
 	RedHatEnterpriseServer)
 		rpm -qa >$PKGLIST
 	;;
 	*)
-		echo "Could not determine Linux distribution. Package list skipped..." >>$TMPFILE
+		echo "Could not determine Linux distribution or lsb_release not installed. Package list skipped..." >>$TMPFILE
 	;;
 esac
 													 
