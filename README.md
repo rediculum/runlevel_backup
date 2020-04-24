@@ -28,7 +28,15 @@ Copy data
 sudo cp -r opt/runlevel_backup/* /opt/runlevel_backup
 sudo cp -r etc/cron.d/* /etc/cron.d
 ```
+Generate SSH Keys
+```
+ssh-keygen -t ed25519 -C runlevel_backup -f /opt/runlevel_backup/backup.key -q -N ""
+```
 ## Configuration
+Put the public key into root's ```authorized_keys``` and specify the command restriction for more security
+```
+command="/opt/runlevel_backup/backup_ssh_cmnd.sh" ssh-ed25519 AAAAXXXXXXXXXXXXXX runlevel_backup
+```
 ### Ansible
 See the available vars in the role's default/main.yml if you want to override them
 ### Manual
