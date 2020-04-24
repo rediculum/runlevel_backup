@@ -4,10 +4,13 @@
 # Sat Jul  2 14:13:58 CET 2011 / added keychain support for ssh-agents
 # Tue May  7 16:40:55 CEST 2013 / changed Database (MySQL/PG/LDAP) backup to dumps
 # Fri Apr  5 13:24:36 CEST 2019 / outsourced customizable variables into backup.conf file
+# Fri Apr 24 09:17:02 CEST 2020 / add --remote-schema to specify key
 # 
 
 ### Variables
+KEYFILE="/opt/runlevel_backup/backup.key"
 RDIFFBIN="/usr/bin/rdiff-backup"
+RDIFFSCHEMA="--remote-schema 'ssh -i $KEYFILE %s rdiff-backup --server'"
 RDIFFPARAMS="--print-statistics --create-full-path"
 TMPFILE="/tmp/backup_$HOSTNAME.sh.tmp"                     # Complete path with filename for mail content
 DRYRUN=
@@ -15,12 +18,10 @@ TXT01="#########################################################################
 
 
 ### Functions
-function f_keychain()
+function f_key()
 {
-	if [ -f ~/.keychain/$HOSTNAME-sh ]; then
-		. ~/.keychain/$HOSTNAME-sh
-	else
-		f_error "No keychain found on this system"
+	if [ ! -f $KEYFILE ]; then
+		f_error "No key found"
 	fi
 }
 

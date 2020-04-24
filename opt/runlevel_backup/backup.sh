@@ -24,6 +24,7 @@
 # Tue May  7 16:40:14 CEST 2013 / Changed Database (MySQL/PG/LDAP) backup to dumps
 # Fri Apr  5 13:23:20 CEST 2019 / Redesigned by customizable config file
 # Sun Jul  7 20:11:49 CEST 2019 / Add Raspbian to Distro and refine grep
+# Fri Apr 24 08:56:45 CEST 2020 / Change keychain to key file
 
 
 ### Config
@@ -45,12 +46,11 @@ fi
 # Check if rdiff-backup exists
 [[ `which $RDIFFBIN` ]] || { echo "$RDIFFBIN not found"; exit 1; }
 
-# Check if a keychain with an adequate ssh agent exist and load it
-f_keychain
+# Check if a key exists
+f_key
 
 # Check if remote server is reachable and backup dir is available
-$RDIFFBIN --test-server $BACKUPSERVER::$BACKUPDIR >$TMPFILE 2>&1 || { f_error "$BACKUPSERVER not reachable"; }
-ssh -q $BACKUPSERVER "test -d $BACKUPDIR" || { f_error "$BACKUPDIR on $BACKUPSERVER not present. Create it first"; }
+ssh -q -i $KEYFILE $BACKUPSERVER "test -d $BACKUPDIR" || { f_error "$BACKUPSERVER not reachable or $BACKUPDIR not present. Create it first"; }
 
 printf "++++++++++++++++++++++ Backup Start at `date +"%H:%M:%S"` +++++++++++++++++++++++\n" >$TMPFILE
 
@@ -83,17 +83,17 @@ done
 printf "\n$TXT01\n# Backup of folders $FOLDERS (`date +"%H:%M:%S"`):\n$TXT01\n" >>$TMPFILE
 echo "--------------[ Change statistics ]--------------" >>$TMPFILE
 for FOLDER in $FOLDERS; do
-	$RDIFFBIN --compare $FOLDER $BACKUPSERVER::$BACKUPDIR$FOLDER >>$TMPFILE
+	eval $RDIFFBIN $RDIFFSCHEMA --compare $FOLDER $BACKUPSERVER::$BACKUPDIR$FOLDER >>$TMPFILE
 done
 
 # Do the backup
-$RDIFFBIN $RDIFFPARAMS $INCLUDEFOLDERS --exclude '**' / $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
+eval $RDIFFBIN $RDIFFSCHEMA $RDIFFPARAMS $INCLUDEFOLDERS --exclude '**' / $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 # Retention
-$RDIFFBIN --remove-older-than $RETENTION --force $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
+eval $RDIFFBIN $RDIFFSCHEMA --remove-older-than $RETENTION --force $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 echo "--------------[ Incremental statistics ]--------------" >>$TMPFILE
-$RDIFFBIN -l $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
+eval $RDIFFBIN $RDIFFSCHEMA -l $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 printf "\n++++++++++++++++++++++ Backup End at `date +"%H:%M:%S"` +++++++++++++++++++++++" >>$TMPFILE
 TIMESTOP=`date +%s`
