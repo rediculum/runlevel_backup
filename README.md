@@ -35,10 +35,10 @@ ssh-keygen -t ed25519 -C runlevel_backup -f /opt/runlevel_backup/backup.key -q -
 ## Configuration
 Put the public key into root's ```authorized_keys``` and specify the command restriction for more security
 ```
-command="/opt/runlevel_backup/backup_ssh_cmnd.sh" ssh-ed25519 AAAAXXXXXXXXXXXXXX runlevel_backup
+command="/opt/runlevel_backup/backup_ssh_cmnd.sh",no-agent-forwarding,no-port-forwarding,no-user-rc,no-X11-forwarding,no-pty ssh-ed25519 AAAAXXXXXXXXXXXXXX runlevel_backup
 ```
 ### Ansible
-See the available vars in the role's default/main.yml if you want to override them
+Put the private key in to default/main.yml and see the other available vars in the role's default/main.yml if you want to override them
 ### Manual
 Edit the file `/opt/runlevel_backup/backup.conf` and change the variables to fit your needs:
 - `FOLDERS` - Array of folders to backup
@@ -60,6 +60,7 @@ Edit the file `/opt/runlevel_backup/backup.conf` and change the variables to fit
 
 Edit the cron file `/etc/cron.d/runlevel_backup` if you want to change the time when a backup is performed
 
+Place the private key in /opt/runlevel_backup/backup.key with perms 400.
 ## License
 This project is licensed under the GNU Affero General Public License v3.0 License - see the [LICENSE](LICENSE) file for details
 
