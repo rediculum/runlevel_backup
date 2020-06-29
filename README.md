@@ -1,7 +1,7 @@
 # Runlevel.ch Backup Framework
 This is the runlevel.ch backup framework developed by [Roland Hansmann](https://github.com/rediculum)
 
-Tested on plaform families ''debian'' and ''redhat''
+Tested on platform families ''debian'' and ''redhat''
 ## Requirements
  - lsb_release
  - mailx (bsd version)
@@ -10,7 +10,7 @@ Tested on plaform families ''debian'' and ''redhat''
 
 ## Installation
 ### Ansible
-The easiest way is to use the [Ansible role](https://galaxy.ansible.com/rediculum/runlevel_backup). It will install all necessary dependencies and the download the framework from github
+The easiest way is to use the [Ansible role](https://galaxy.ansible.com/rediculum/runlevel_backup). It will install all necessary dependencies and download the framework from github
 ```
 $ ansbile-galaxy install rediculum.runlevel_backup
 ```
