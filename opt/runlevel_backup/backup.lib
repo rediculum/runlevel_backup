@@ -5,12 +5,13 @@
 # Tue May  7 16:40:55 CEST 2013 / changed Database (MySQL/PG/LDAP) backup to dumps
 # Fri Apr  5 13:24:36 CEST 2019 / outsourced customizable variables into backup.conf file
 # Fri Apr 24 09:17:02 CEST 2020 / add --remote-schema to specify key
+# Sat Apr  4 09:52:16 CEST 2026 / do not check strictly host keys
 # 
 
 ### Variables
 KEYFILE="/opt/runlevel_backup/backup.key"
 RDIFFBIN="/usr/bin/rdiff-backup"
-RDIFFSCHEMA="--remote-schema 'ssh -i $KEYFILE %s rdiff-backup --server'"
+RDIFFSCHEMA="--remote-schema 'ssh -o StrictHostKeyChecking=no -i $KEYFILE %s rdiff-backup --server'"
 RDIFFPARAMS="--print-statistics --create-full-path"
 TMPFILE="/tmp/backup_$HOSTNAME.sh.tmp"                     # Complete path with filename for mail content
 DRYRUN=
