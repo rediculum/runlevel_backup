@@ -10,7 +10,7 @@ Tested on platform families ''debian'' and ''redhat''
 
 ## Installation
 ### Ansible
-The easiest way is to use the [Ansible role](https://galaxy.ansible.com/rediculum/runlevel_backup). It will install all necessary dependencies and download the framework from github
+The easiest way is to use the [Ansible role](https://galaxy.ansible.com/rediculum/runlevel_backup). It will install all necessary dependencies, download the framework from github and generates the necessary files.
 ```
 $ ansbile-galaxy install rediculum.runlevel_backup
 ```
@@ -38,7 +38,8 @@ Put the public key into root's ```authorized_keys``` and specify the command res
 command="/opt/runlevel_backup/backup_ssh_cmnd.sh",no-agent-forwarding,no-port-forwarding,no-user-rc,no-X11-forwarding,no-pty ssh-ed25519 AAAAXXXXXXXXXXXXXX runlevel_backup
 ```
 ### Ansible
-Put the private key in to default/main.yml and see the other available vars in the role's default/main.yml if you want to override them
+See the default/main.yml for all configuration options and override them by specifying in your inventory or group_vars. Run a playbook with the role "rediculum.runlevel_backup"
+
 ### Manual
 Edit the file `/opt/runlevel_backup/backup.conf` and change the variables to fit your needs:
 - `FOLDERS` - Array of folders to backup
