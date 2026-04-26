@@ -5,7 +5,6 @@ Tested on platform families ''debian'' and ''redhat''
 ## Requirements
  - lsb_release
  - mailx (bsd version)
- - keychain
  - rdiff-backup
 
 ## Installation
@@ -28,17 +27,18 @@ Copy data
 sudo cp -r opt/runlevel_backup/* /opt/runlevel_backup
 sudo cp -r etc/cron.d/* /etc/cron.d
 ```
+
+## Configuration
 Generate SSH Keys
 ```
-ssh-keygen -t ed25519 -C runlevel_backup -f /opt/runlevel_backup/backup.key -q -N ""
+sudo ssh-keygen -t ed25519 -C runlevel_backup -f /opt/runlevel_backup/backup.key -q -N ""
 ```
-## Configuration
-Put the public key into root's ```authorized_keys``` and specify the command restriction for more security
+Put the generated public key into root's ```authorized_keys``` and specify the command restriction for more security!
 ```
 command="/opt/runlevel_backup/backup_ssh_cmnd.sh",no-agent-forwarding,no-port-forwarding,no-user-rc,no-X11-forwarding,no-pty ssh-ed25519 AAAAXXXXXXXXXXXXXX runlevel_backup
 ```
 ### Ansible
-See the default/main.yml for all configuration options and override them by specifying in your inventory or group_vars. Run a playbook with the role "rediculum.runlevel_backup"
+See the default/main.yml for all configuration options and override them by specifying in your inventory or group_vars. Run a playbook with the role "rediculum.runlevel_backup" and all is done.
 
 ### Manual
 Edit the file `/opt/runlevel_backup/backup.conf` and change the variables to fit your needs:
@@ -61,7 +61,6 @@ Edit the file `/opt/runlevel_backup/backup.conf` and change the variables to fit
 
 Edit the cron file `/etc/cron.d/runlevel_backup` if you want to change the time when a backup is performed
 
-Place the private key in /opt/runlevel_backup/backup.key with perms 400.
 ## License
 This project is licensed under the GNU Affero General Public License v3.0 License - see the [LICENSE](LICENSE) file for details
 
