@@ -25,6 +25,7 @@
 # Fri Apr  5 13:23:20 CEST 2019 / Redesigned by customizable config file
 # Sun Jul  7 20:11:49 CEST 2019 / Add Raspbian to Distro and refine grep
 # Fri Apr 24 08:56:45 CEST 2020 / Change keychain to key file
+# Sun May  3 17:58:23 CEST 2026 / Add excludes
 
 
 ### Config
@@ -79,6 +80,16 @@ for FOLDER in $FOLDERS; do
 	INCLUDEFOLDERS="$INCLUDEFOLDERS --include $FOLDER "
 done
 
+# Building exclude list
+if [[ -z $EXCLUDES ]]; then
+  EXCLUDEFOLDERS="--exclude '**' "
+else
+  for EXCLUDE in $EXCLUDES; do
+	  EXCLUDEFOLDERS="$EXCLUDEFOLDERS --exclude $EXCLUDE "
+  done
+	EXCLUDEFOLDERS="$EXCLUDEFOLDERS --exclude '**' "
+fi
+
 # Show what will be changed
 printf "\n$TXT01\n# Backup of folders $FOLDERS (`date +"%H:%M:%S"`):\n$TXT01\n" >>$TMPFILE
 echo "--------------[ Change statistics ]--------------" >>$TMPFILE
@@ -87,7 +98,7 @@ for FOLDER in $FOLDERS; do
 done
 
 # Do the backup
-eval "$RDIFFBIN $RDIFFSCHEMA $RDIFFPARAMS $INCLUDEFOLDERS --exclude '**' / $BACKUPSERVER::$BACKUPDIR" >>$TMPFILE
+eval "$RDIFFBIN $RDIFFSCHEMA $RDIFFPARAMS $INCLUDEFOLDERS $EXCLUDEFOLDERS / $BACKUPSERVER::$BACKUPDIR" >>$TMPFILE
 
 # Retention
 eval $RDIFFBIN $RDIFFSCHEMA --remove-older-than $RETENTION --force $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
