@@ -33,7 +33,7 @@ Generate SSH Keys
 ```
 sudo ssh-keygen -t ed25519 -C runlevel_backup -f /opt/runlevel_backup/backup.key -q -N ""
 ```
-Put the generated public key into root's ```authorized_keys``` and specify the command restriction for more security!
+Put the generated public key into root's ```authorized_keys``` of the backup server and specify the command restriction for more security!
 ```
 command="/opt/runlevel_backup/backup_ssh_cmnd.sh",no-agent-forwarding,no-port-forwarding,no-user-rc,no-X11-forwarding,no-pty ssh-ed25519 AAAAXXXXXXXXXXXXXX runlevel_backup
 ```
