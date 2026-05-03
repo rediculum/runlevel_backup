@@ -43,6 +43,7 @@ See the default/main.yml for all configuration options and override them by spec
 ### Manual
 Edit the file `/opt/runlevel_backup/backup.conf` and change the variables to fit your needs:
 - `FOLDERS` - Array of folders to backup
+- `EXCLUDES` - Array of folders or files to exclude from backup
 - `BACKUPSERVER` - Targert server for backup
 - `BACKUPDIR` - Target directory on backup server
 - `PKGLIST` - Location of package list
