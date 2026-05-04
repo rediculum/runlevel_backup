@@ -5,7 +5,7 @@ Tested on platform families ''debian'' and ''redhat''
 ## Requirements
  - lsb_release
  - mailx (bsd version)
- - rdiff-backup
+ - rdiff-backup (>2.0.0)
 
 ## Installation
 ### Ansible
