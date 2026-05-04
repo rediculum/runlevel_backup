@@ -48,6 +48,9 @@ fi
 # Check if rdiff-backup exists
 [[ `which $RDIFFBIN` ]] || { echo "$RDIFFBIN not found"; exit 1; }
 
+# Check if rdiff-backup has v2.0
+[[ `$RDIFFBIN --version |awk '{print $2}' |cut -f1 -d.` -eq 2 ]] || { echo "$RDIFFBIN is not Version 2"; exit 1; }
+
 # Check if a key exists
 f_key
 
