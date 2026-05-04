@@ -26,6 +26,7 @@
 # Sun Jul  7 20:11:49 CEST 2019 / Add Raspbian to Distro and refine grep
 # Fri Apr 24 08:56:45 CEST 2020 / Change keychain to key file
 # Sun May  3 17:58:23 CEST 2026 / Add excludes
+# Mon May  4 09:49:45 CEST 2026 / Upgrade to rdiff 2.0 and implement checks
 
 
 ### Config
@@ -94,17 +95,17 @@ fi
 printf "\n$TXT01\n# Backup of folders $FOLDERS (`date +"%H:%M:%S"`):\n$TXT01\n" >>$TMPFILE
 echo "--------------[ Change statistics ]--------------" >>$TMPFILE
 for FOLDER in $FOLDERS; do
-	eval $RDIFFBIN $RDIFFSCHEMA --compare $FOLDER $BACKUPSERVER::$BACKUPDIR$FOLDER >>$TMPFILE
+	eval $RDIFFBIN $RDIFFSCHEMA compare $FOLDER $BACKUPSERVER::$BACKUPDIR$FOLDER >>$TMPFILE
 done
 
 # Do the backup
-eval "$RDIFFBIN $RDIFFSCHEMA $RDIFFPARAMS $INCLUDEFOLDERS $EXCLUDEFOLDERS / $BACKUPSERVER::$BACKUPDIR" >>$TMPFILE
+eval "$RDIFFBIN $RDIFFSCHEMA backup $RDIFFPARAMS $INCLUDEFOLDERS $EXCLUDEFOLDERS / $BACKUPSERVER::$BACKUPDIR" >>$TMPFILE
 
 # Retention
-eval $RDIFFBIN $RDIFFSCHEMA --remove-older-than $RETENTION --force $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
+eval $RDIFFBIN $RDIFFSCHEMA --force remove increments --older-than $RETENTION $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 echo "--------------[ Incremental statistics ]--------------" >>$TMPFILE
-eval $RDIFFBIN $RDIFFSCHEMA -l $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
+eval $RDIFFBIN $RDIFFSCHEMA list increments $BACKUPSERVER::$BACKUPDIR >>$TMPFILE
 
 printf "\n++++++++++++++++++++++ Backup End at `date +"%H:%M:%S"` +++++++++++++++++++++++" >>$TMPFILE
 TIMESTOP=`date +%s`
